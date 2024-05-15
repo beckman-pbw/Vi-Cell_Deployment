@@ -1,0 +1,39 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+target/*
+x64/
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+#*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+#*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# VS
+*.user
+*.ipch
+*.suo
+*.sdf
+*.vc.db
+*.opendb
+Debug/
+Release/
+
+
+# Build Artifact Folders
+bin/
+EXE/
+ScoutSetUP/ScoutSetUP/
