@@ -2,7 +2,7 @@
 	<name>Vi-Cell Common Deployment</name>
 	<description>Build and deploy</description>
 
-	<groupId>com.beckman.particle.vi-cell</groupId>
+	<groupId>com.beckman.particle.${project.build.variant}</groupId>
 	<artifactId>deployment</artifactId>
 
 	<version>0.0.1-SNAPSHOT</version>
@@ -64,7 +64,8 @@
 		<tools>c:\tools\</tools>
 		<project.build.partnumber>88888</project.build.partnumber>
 		<project.build.offline_partnumber>77777</project.build.offline_partnumber>
-		<project.build.automation_dll_name>CellHealthOpcUaModelDesign</project.build.automation_dll_name>
+		<project.build.automation_dll_name>CellHealthOpcUaModelDesign</project.build.automation_dll_name>		
+		<project.build.variant>vi-cell</project.build.variant>		
 	</properties>
 
 	<dependencies>
@@ -88,7 +89,7 @@
 		</dependency>
 		<!-- ................................................................-->
 		<dependency>
-			<groupId>com.beckman.particle.vi-cell</groupId>
+			<groupId>com.beckman.particle.${project.build.variant}</groupId>
 			<artifactId>backend</artifactId>
 			<version>${project.version}</version>
 			<type>zip</type>
@@ -96,7 +97,7 @@
 		</dependency>
 		<!-- ................................................................-->
 		<dependency>
-			<groupId>com.beckman.particle.vi-cell</groupId>
+			<groupId>com.beckman.particle.${project.build.variant}</groupId>
 			<artifactId>ux</artifactId>
 			<version>${project.version}</version>
 			<type>zip</type>
@@ -104,14 +105,14 @@
 		</dependency>
 		<!-- ................................................................-->
 		<dependency>
-			<groupId>com.beckman.particle.vi-cell</groupId>
+			<groupId>com.beckman.particle.${project.build.variant}</groupId>
 			<artifactId>opcua</artifactId>
 			<version>${project.version}</version>
 			<type>zip</type>
 		</dependency>
 		<!-- ................................................................-->
 		<dependency>
-			<groupId>com.beckman.particle.vi-cell</groupId>
+			<groupId>com.beckman.particle.${project.build.variant}</groupId>
 			<artifactId>grpc</artifactId>
 			<version>${project.version}</version>
 			<type>zip</type>
@@ -237,7 +238,8 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/src/main/assembly</outputDirectory>
+<!--							<outputDirectory>${basedir}/target</outputDirectory> -->
+							<outputDirectory>${basedir}/src/main/assembly/build</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/src/main/assembly/source</directory>
@@ -253,7 +255,8 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/src/main/installer</outputDirectory>
+							<outputDirectory>${basedir}/target</outputDirectory>
+<!--							<outputDirectory>${basedir}/src/main/installer/build</outputDirectory> -->
 							<resources>
 								<resource>
 									<directory>${basedir}/src/main/installer/source</directory>
@@ -533,7 +536,7 @@
 						<configuration>
 							<outputDirectory>target/</outputDirectory>
 							<descriptors>
-								<value>src/main/assembly/instrument-assembly.xml</value>
+								<value>src/main/assembly/build/instrument-assembly.xml</value>
 							</descriptors>
 						</configuration>
 						<goals>
@@ -546,7 +549,7 @@
 						<configuration>
 							<outputDirectory>target/</outputDirectory>
 							<descriptors>
-								<value>src/main/assembly/offline-assembly.xml</value>
+								<value>src/main/assembly/build/offline-assembly.xml</value>
 							</descriptors>
 						</configuration>
 						<goals>
@@ -559,7 +562,7 @@
 						<configuration>
 							<outputDirectory>target/</outputDirectory>
 							<descriptors>
-								<value>src/main/assembly/service-assembly.xml</value>
+								<value>src/main/assembly/build/service-assembly.xml</value>
 							</descriptors>
 						</configuration>
 						<goals>
@@ -572,7 +575,7 @@
 						<configuration>
 							<outputDirectory>target/</outputDirectory>
 							<descriptors>
-								<value>src/main/assembly/instrument-mfg-assembly.xml</value>
+								<value>src/main/assembly/build/instrument-mfg-assembly.xml</value>
 							</descriptors>
 						</configuration>
 						<goals>
@@ -585,7 +588,7 @@
 						<configuration>
 							<outputDirectory>target/</outputDirectory>
 							<descriptors>
-								<value>src/main/assembly/reagent-RnD-assembly.xml</value>
+								<value>src/main/assembly/build/reagent-RnD-assembly.xml</value>
 							</descriptors>
 						</configuration>
 						<goals>
@@ -598,7 +601,7 @@
 						<configuration>
 							<outputDirectory>target/</outputDirectory>
 							<descriptors>
-								<value>src/main/assembly/reagent-mfg-assembly.xml</value>
+								<value>src/main/assembly/build/reagent-mfg-assembly.xml</value>
 							</descriptors>
 						</configuration>
 						<goals>
@@ -611,7 +614,7 @@
 						<configuration>
 							<outputDirectory>target/</outputDirectory>
 							<descriptors>
-								<value>src/main/assembly/instrument-RnD-assembly.xml</value>
+								<value>src/main/assembly/build/instrument-RnD-assembly.xml</value>
 							</descriptors>
 						</configuration>
 						<goals>

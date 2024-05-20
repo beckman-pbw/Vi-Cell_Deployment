@@ -1,0 +1,21 @@
+<assembly>
+  <!-- 
+    assembly descriptor to create a zip package containing the scripts laid
+    out as in the src/main/scripts directory.
+  -->
+  <id>reagent-RnD</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <files>
+    <!-- include the build.properties file, filled in with current properties -->
+    <file>
+      <source>src/main/assembly/build/build.properties</source>
+      <outputDirectory></outputDirectory>
+      <filtered>true</filtered>
+    </file>
+<!--file><source>target/dependencies/Hawkeye/RFIDMemoryMapGenerator.exe</source><outputDirectory>Hawkeye</outputDirectory><filtered>false</filtered></file-->
+<!--file><source>target/dependencies/Hawkeye/ReagentInfo.txt</source><outputDirectory>Hawkeye</outputDirectory><filtered>false</filtered></file-->
+  </files>
+</assembly>

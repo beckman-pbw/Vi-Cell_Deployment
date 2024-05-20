@@ -1,0 +1,613 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Language="1033" Manufacturer="Beckman Coulter" Name="ViCell Blu" UpgradeCode="80fb848d-9bd3-461e-93f0-c41a0a895d25" Version="${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${timestamp}">
+		<Package Comments="Windows Installer Package" Compressed="yes" InstallerVersion="200"/>
+		<MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed.  Setup will now exit"
+			AllowDowngrades="no"
+			Schedule="afterInstallInitialize" />
+		<Upgrade Id='80fb848d-9bd3-461e-93f0-c41a0a895d25'>
+			<UpgradeVersion OnlyDetect='no' Property='TARGETFOUND'
+				Minimum='0.0.1' IncludeMinimum='yes'
+				Maximum='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}' IncludeMaximum='yes' />
+		</Upgrade>
+
+		<Media Cabinet="product.cab" EmbedCab="yes" Id="1"/>
+		<Icon Id="main_icon" SourceFile="dependencies\Hawkeye\Installer\Carousel.ico" />
+		<Property Id="ARPPRODUCTICON" Value="main_icon" />
+		<Directory Id="TARGETDIR" Name="SourceDir">
+
+			<!-- Add an entry to RunOnce in the registry MUST ensure this does no harm for offline install -->
+			<Component Id="RegistryEntries" Guid="5F5E8072-B683-4059-A40D-9984347A2154">
+				<RegistryKey Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce">
+					<RegistryValue Type="string" Name="UpdateDone" Value="C:\Instrument\Tools\FinishInstall.bat"/>
+				</RegistryKey>
+			</Component>
+
+			<Directory Id="INSTALLDIR" Name="Instrument">	  		  
+				<Directory Id="Legal" Name="Legal">
+					<Component Guid="DCE92984-BE1C-457D-A3D1-C000F06AF986" Id="ApplicationFiles200">
+						<File Id="ApplicationFile200" Source="..\src\main\doc\legal.html"/>
+					</Component>
+					<Component Guid="EC5AB86C-4DCD-499D-B262-F330F06E3F74" Id="ApplicationFiles201">
+						<File Id="ApplicationFile201" Source="..\src\main\doc\IFUpage.html"/>
+					</Component>
+					<Component Guid="EEDDC7C2-9549-401C-88AB-D05E17C789E8" Id="ApplicationFiles207">
+						<File Id="ApplicationFile207" Source="..\src\main\doc\logo_BCLS_Horizontal.png"/>
+					</Component>
+					<Directory Id="css" Name="css">
+						<Component Guid="C7358BAF-2F9F-47A2-A6DC-B69E4D1C7976" Id="ApplicationFiles202">
+							<File Id="ApplicationFile202" Source="..\src\main\doc\css\apache-maven-fluido-1.3.0.min.css"/>
+						</Component>
+						<Component Guid="3B51F576-E962-4BA7-9099-F28848BBE897" Id="ApplicationFiles203">
+							<File Id="ApplicationFile203" Source="..\src\main\doc\css\site.css"/>
+						</Component>
+						<Component Guid="284FA1B2-65F3-4A89-95C9-646A86E13FEF" Id="ApplicationFiles204">
+							<File Id="ApplicationFile204" Source="..\src\main\doc\css\print.css"/>
+						</Component>
+						<Component Guid="54514422-F4C4-4B1A-BF20-8C4329EF9B34" Id="ApplicationFiles205">
+							<File Id="ApplicationFile205" Source="..\src\main\doc\css\maven-theme.css"/>
+						</Component>
+						<Component Guid="71195BD5-701C-46FF-802A-8826621C985F" Id="ApplicationFiles206">
+							<File Id="ApplicationFile206" Source="..\src\main\doc\css\maven-base.css"/>
+						</Component>
+					</Directory>
+				</Directory>
+
+				<Directory Id="OpcUaServer" Name="OpcUaServer">
+					<Directory Id="OpcUaServerModel" Name="Model">
+						<Component Guid="aed99a2d-b942-428a-b05b-cd764ef089b9" Id="OpcUaServerModelFiles">
+							<File Id="OpcUaServerModelFile1" Source="dependencies\OpcUaServer\Model\ViCellBlu.PredefinedNodes.uanodes"/>
+						</Component>
+					</Directory>
+
+					<Directory Id="OpcUaServerSchema" Name="Schema">
+						<Component Guid="b2efd8af-a79e-4896-b518-7f1b8224a217" Id="OpcUaServerSchemaFiles">
+							<File Id="OpcUaServerSchemaFile1" Source="dependencies\OpcUaServer\Schema\ApplicationConfiguration.xsd"/>
+							<File Id="OpcUaServerSchemaFile2" Source="dependencies\OpcUaServer\Schema\Opc.Ua.Types.xsd"/>
+						</Component>
+					</Directory>
+
+					<Component Guid="8b52b683-47e5-4019-9ac2-ca0a314aa5cf" Id="OpcUaServerFiles">
+						<File Id="AutoMapper.dll" Source="dependencies\OpcUaServer\AutoMapper.dll"/>
+						<File Id="BouncyCastle.Crypto.dll" Source="dependencies\OpcUaServer\BouncyCastle.Crypto.dll"/>
+						<File Id="Castle.Core.dll" Source="dependencies\OpcUaServer\Castle.Core.dll"/>
+						<File Id="Google.Protobuf.dll" Source="dependencies\OpcUaServer\Google.Protobuf.dll"/>
+						<File Id="Grpc.Core.Api.dll" Source="dependencies\OpcUaServer\Grpc.Core.Api.dll"/>
+						<File Id="Grpc.Core.dll" Source="dependencies\OpcUaServer\Grpc.Core.dll"/>
+						<File Id="GrpcClient.dll" Source="dependencies\OpcUaServer\GrpcClient.dll"/>
+						<File Id="grpc_csharp_ext.x64.dll" Source="dependencies\OpcUaServer\grpc_csharp_ext.x64.dll"/>
+						<File Id="grpc_csharp_ext.x86.dll" Source="dependencies\OpcUaServer\grpc_csharp_ext.x86.dll"/>
+						<File Id="libgrpc_csharp_ext.x64.dylib" Source="dependencies\OpcUaServer\libgrpc_csharp_ext.x64.dylib"/>
+						<File Id="libgrpc_csharp_ext.x64.so" Source="dependencies\OpcUaServer\libgrpc_csharp_ext.x64.so"/>
+						<File Id="log4net.config" Source="dependencies\OpcUaServer\log4net.config"/>
+						<File Id="log4net.dll" Source="dependencies\OpcUaServer\log4net.dll"/>
+						<File Id="Microsoft.AspNetCore.Connections.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Connections.Abstractions.dll"/>
+						<File Id="Microsoft.AspNetCore.Hosting.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Hosting.Abstractions.dll"/>
+						<File Id="Microsoft.AspNetCore.Hosting.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Hosting.dll"/>
+						<File Id="Microsoft.AspNetCore.Hosting.Server.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll"/>
+						<File Id="Microsoft.AspNetCore.Http.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Http.Abstractions.dll"/>
+						<File Id="Microsoft.AspNetCore.Http.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Http.dll"/>
+						<File Id="Microsoft.AspNetCore.Http.Extensions.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Http.Extensions.dll"/>
+						<File Id="Microsoft.AspNetCore.Http.Features.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Http.Features.dll"/>
+						<File Id="Microsoft.AspNetCore.Server.Kestrel.Core.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Server.Kestrel.Core.dll"/>
+						<File Id="Microsoft.AspNetCore.Server.Kestrel.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Server.Kestrel.dll"/>
+						<File Id="Microsoft.AspNetCore.Server.Kestrel.Https.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Server.Kestrel.Https.dll"/>
+						<File Id="Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll"/>
+						<File Id="Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll"/>
+						<File Id="Microsoft.AspNetCore.WebUtilities.dll" Source="dependencies\OpcUaServer\Microsoft.AspNetCore.WebUtilities.dll"/>
+						<File Id="Microsoft.Bcl.AsyncInterfaces.dll" Source="dependencies\OpcUaServer\Microsoft.Bcl.AsyncInterfaces.dll"/>
+						<File Id="Microsoft.Extensions.Configuration.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Configuration.Abstractions.dll"/>
+						<File Id="Microsoft.Extensions.Configuration.Binder.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Configuration.Binder.dll"/>
+						<File Id="Microsoft.Extensions.Configuration.CommandLine.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Configuration.CommandLine.dll"/>
+						<File Id="Microsoft.Extensions.Configuration.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Configuration.dll"/>
+						<File Id="Microsoft.Extensions.Configuration.EnvironmentVariables.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Configuration.EnvironmentVariables.dll"/>
+						<File Id="Microsoft.Extensions.Configuration.FileExtensions.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Configuration.FileExtensions.dll"/>
+						<File Id="Microsoft.Extensions.Configuration.Json.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Configuration.Json.dll"/>
+						<File Id="Microsoft.Extensions.Configuration.UserSecrets.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Configuration.UserSecrets.dll"/>
+						<File Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.DependencyInjection.Abstractions.dll"/>
+						<File Id="Microsoft.Extensions.DependencyInjection.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.DependencyInjection.dll"/>
+						<File Id="Microsoft.Extensions.FileProviders.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.FileProviders.Abstractions.dll"/>
+						<File Id="Microsoft.Extensions.FileProviders.Physical.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.FileProviders.Physical.dll"/>
+						<File Id="Microsoft.Extensions.FileSystemGlobbing.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.FileSystemGlobbing.dll"/>
+						<File Id="Microsoft.Extensions.Hosting.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Hosting.Abstractions.dll"/>
+						<File Id="Microsoft.Extensions.Hosting.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Hosting.dll"/>
+						<File Id="Microsoft.Extensions.Logging.Abstractions.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Logging.Abstractions.dll"/>
+						<File Id="Microsoft.Extensions.Logging.Configuration.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Logging.Configuration.dll"/>
+						<File Id="Microsoft.Extensions.Logging.Console.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Logging.Console.dll"/>
+						<File Id="Microsoft.Extensions.Logging.Debug.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Logging.Debug.dll"/>
+						<File Id="Microsoft.Extensions.Logging.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Logging.dll"/>
+						<File Id="Microsoft.Extensions.Logging.EventLog.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Logging.EventLog.dll"/>
+						<File Id="Microsoft.Extensions.Logging.EventSource.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Logging.EventSource.dll"/>
+						<File Id="Microsoft.Extensions.ObjectPool.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.ObjectPool.dll"/>
+						<File Id="Microsoft.Extensions.Options.ConfigurationExtensions.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Options.ConfigurationExtensions.dll"/>
+						<File Id="Microsoft.Extensions.Options.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Options.dll"/>
+						<File Id="Microsoft.Extensions.Primitives.dll" Source="dependencies\OpcUaServer\Microsoft.Extensions.Primitives.dll"/>
+						<File Id="Microsoft.Net.Http.Headers.dll" Source="dependencies\OpcUaServer\Microsoft.Net.Http.Headers.dll"/>
+						<File Id="Newtonsoft.Json.dll" Source="dependencies\OpcUaServer\Newtonsoft.Json.dll"/>
+						<File Id="Ninject.dll" Source="dependencies\OpcUaServer\Ninject.dll"/>
+						<File Id="Ninject.Extensions.Factory.dll" Source="dependencies\OpcUaServer\Ninject.Extensions.Factory.dll"/>
+						<File Id="Ninject.Extensions.Logging.dll" Source="dependencies\OpcUaServer\Ninject.Extensions.Logging.dll"/>
+						<File Id="Ninject.Extensions.Logging.Log4net.dll" Source="dependencies\OpcUaServer\Ninject.Extensions.Logging.Log4net.dll"/>
+						<File Id="Opc.Ua.Bindings.Https.dll" Source="dependencies\OpcUaServer\Opc.Ua.Bindings.Https.dll"/>
+						<File Id="Opc.Ua.Client.dll" Source="dependencies\OpcUaServer\Opc.Ua.Client.dll"/>
+						<File Id="Opc.Ua.Configuration.dll" Source="dependencies\OpcUaServer\Opc.Ua.Configuration.dll"/>
+						<File Id="Opc.Ua.Core.dll" Source="dependencies\OpcUaServer\Opc.Ua.Core.dll"/>
+						<File Id="Opc.Ua.Gds.Client.Common.dll" Source="dependencies\OpcUaServer\Opc.Ua.Gds.Client.Common.dll"/>
+						<File Id="Opc.Ua.Gds.Server.Common.dll" Source="dependencies\OpcUaServer\Opc.Ua.Gds.Server.Common.dll"/>
+						<File Id="Opc.Ua.Security.Certificates.dll" Source="dependencies\OpcUaServer\Opc.Ua.Security.Certificates.dll"/>
+						<File Id="Opc.Ua.Server.dll" Source="dependencies\OpcUaServer\Opc.Ua.Server.dll"/>
+						<File Id="Protos.dll" Source="dependencies\OpcUaServer\Protos.dll"/>
+						<File Id="${project.build.automation_dll_name}.dll" Source="dependencies\OpcUaServer\\${project.build.automation_dll_name}.dll"/>
+						<File Id="System.Buffers.dll" Source="dependencies\OpcUaServer\System.Buffers.dll"/>
+						<File Id="System.Collections.Immutable.dll" Source="dependencies\OpcUaServer\System.Collections.Immutable.dll"/>
+						<File Id="System.Diagnostics.DiagnosticSource.dll" Source="dependencies\OpcUaServer\System.Diagnostics.DiagnosticSource.dll"/>
+						<File Id="System.Formats.Asn1.dll" Source="dependencies\OpcUaServer\System.Formats.Asn1.dll"/>
+						<File Id="System.IO.Pipelines.dll" Source="dependencies\OpcUaServer\System.IO.Pipelines.dll"/>
+						<File Id="System.Memory.dll" Source="dependencies\OpcUaServer\System.Memory.dll"/>
+						<File Id="System.Numerics.Vectors.dll" Source="dependencies\OpcUaServer\System.Numerics.Vectors.dll"/>
+						<File Id="System.Reflection.Metadata.dll" Source="dependencies\OpcUaServer\System.Reflection.Metadata.dll"/>
+						<File Id="System.Runtime.CompilerServices.Unsafe.dll" Source="dependencies\OpcUaServer\System.Runtime.CompilerServices.Unsafe.dll"/>
+						<File Id="System.Security.Cryptography.Cng.dll" Source="dependencies\OpcUaServer\System.Security.Cryptography.Cng.dll"/>
+						<File Id="System.Text.Encodings.Web.dll" Source="dependencies\OpcUaServer\System.Text.Encodings.Web.dll"/>
+						<File Id="System.Text.Json.dll" Source="dependencies\OpcUaServer\System.Text.Json.dll"/>
+						<File Id="System.Threading.Tasks.Extensions.dll" Source="dependencies\OpcUaServer\System.Threading.Tasks.Extensions.dll"/>
+						<File Id="System.ValueTuple.dll" Source="dependencies\OpcUaServer\System.ValueTuple.dll"/>
+						<File Id="ViCellBLU.Server.Config.xml" Source="dependencies\OpcUaServer\ViCellBLU.Server.Config.xml"/>
+						<File Id="ViCellOpcUaServer.exe" Source="dependencies\OpcUaServer\ViCellOpcUaServer.exe"/>
+						<File Id="ViCellOpcUaServer.exe.config" Source="dependencies\OpcUaServer\ViCellOpcUaServer.exe.config"/>
+						<File Id="ViCellOpcUaServer.runtimeconfig.json" Source="dependencies\OpcUaServer\ViCellOpcUaServer.runtimeconfig.json"/>
+						<File Id="WatchdogConfiguration.json" Source="dependencies\ScoutUI\Watchdog\WatchdogConfiguration.json"/>
+					</Component>
+				</Directory>
+				
+				<Directory Id="Tools" Name="Tools">
+					<Directory Id="SDK" Name="SDK">
+						<Directory Id="ViCellBLU_dotNet_API" Name="ViCellBLU_dotNet_API">						
+							<Component Guid="F2E992DC-FF83-477C-BD62-C98E45AC0C60" Id="ViCellBluDotNetApiFiles">
+								<File Id="OpcUaClientApiAutoMapper.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\AutoMapper.dll"/>
+								<File Id="OpcUaClientApiBouncyCastle.Crypto.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\BouncyCastle.Crypto.dll"/>
+								<File Id="OpcUaClientApiCastle.Core.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Castle.Core.dll"/>
+								<File Id="OpcUaClientApiGoogle.Protobuf.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Google.Protobuf.dll"/>
+								<File Id="OpcUaClientApiGrpc.Core.Api.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Grpc.Core.Api.dll"/>
+								<File Id="OpcUaClientApiGrpc.Core.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Grpc.Core.dll"/>
+								<File Id="OpcUaClientApiGrpcClient.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\GrpcClient.dll"/>
+								<File Id="OpcUaClientApigrpc_csharp_ext.x64.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\grpc_csharp_ext.x64.dll"/>
+								<File Id="OpcUaClientApigrpc_csharp_ext.x86.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\grpc_csharp_ext.x86.dll"/>
+								<File Id="OpcUaClientApilibgrpc_csharp_ext.x64.dylib" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\libgrpc_csharp_ext.x64.dylib"/>
+								<File Id="OpcUaClientApilibgrpc_csharp_ext.x64.so" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\libgrpc_csharp_ext.x64.so"/>
+								<File Id="OpcUaClientApilog4net.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\log4net.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Connections.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Connections.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Hosting.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Hosting.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Hosting.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Hosting.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Hosting.Server.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Http.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Http.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Http.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Http.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Http.Extensions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Http.Extensions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Http.Features.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Http.Features.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Server.Kestrel.Core.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Server.Kestrel.Core.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Server.Kestrel.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Server.Kestrel.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Server.Kestrel.Https.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Server.Kestrel.Https.dll"/>
+								<File Id="OpcApiMicrosoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.AspNetCore.WebUtilities.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.AspNetCore.WebUtilities.dll"/>
+								<!-- <File Id="OpcUaClientApiMicrosoft.Bcl.AsyncInterfaces.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Bcl.AsyncInterfaces.dll"/> -->
+								<File Id="OpcUaClientApiMicrosoft.Extensions.Configuration.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Configuration.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.Configuration.Binder.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Configuration.Binder.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.Configuration.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Configuration.dll"/>
+								<File Id="OpcApiMicrosoft.Extensions.Configuration.EnvironmentVariables.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Configuration.EnvironmentVariables.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.Configuration.FileExtensions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Configuration.FileExtensions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.DependencyInjection.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.DependencyInjection.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.DependencyInjection.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.DependencyInjection.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.FileProviders.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.FileProviders.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.FileProviders.Physical.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.FileProviders.Physical.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.FileSystemGlobbing.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.FileSystemGlobbing.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.Hosting.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Hosting.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.Logging.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Logging.Abstractions.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.Logging.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Logging.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.ObjectPool.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.ObjectPool.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.Options.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Options.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Extensions.Primitives.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Extensions.Primitives.dll"/>
+								<File Id="OpcUaClientApiMicrosoft.Net.Http.Headers.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Microsoft.Net.Http.Headers.dll"/>
+								<File Id="OpcUaClientApiNewtonsoft.Json.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Newtonsoft.Json.dll"/>
+								<File Id="OpcUaClientApiNinject.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Ninject.dll"/>
+								<File Id="OpcUaClientApiNinject.Extensions.Factory.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Ninject.Extensions.Factory.dll"/>
+								<File Id="OpcUaClientApiNinject.Extensions.Logging.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Ninject.Extensions.Logging.dll"/>
+								<File Id="OpcUaClientApiOpc.Ua.Bindings.Https.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Opc.Ua.Bindings.Https.dll"/>
+								<File Id="OpcUaClientApiOpc.Ua.Client.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Opc.Ua.Client.dll"/>
+								<File Id="OpcUaClientApiOpc.Ua.Configuration.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Opc.Ua.Configuration.dll"/>
+								<File Id="OpcUaClientApiOpc.Ua.Core.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Opc.Ua.Core.dll"/>
+								<File Id="OpcUaClientApiOpc.Ua.Gds.Client.Common.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Opc.Ua.Gds.Client.Common.dll"/>
+								<File Id="OpcUaClientApiOpc.Ua.Gds.Server.Common.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Opc.Ua.Gds.Server.Common.dll"/>
+								<File Id="OpcUaClientApiOpc.Ua.Security.Certificates.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Opc.Ua.Security.Certificates.dll"/>
+								<File Id="OpcUaClientApiOpc.Ua.Server.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Opc.Ua.Server.dll"/>
+								<File Id="OpcUaClientApiProtos.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\Protos.dll"/>
+								<File Id="OpcUaClientApiSystem.Buffers.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Buffers.dll"/>
+								<File Id="OpcUaClientApiSystem.Collections.Immutable.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Collections.Immutable.dll"/>
+								<File Id="OpcUaClientApiSystem.ComponentModel.Annotations.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.ComponentModel.Annotations.dll"/>
+								<File Id="OpcUaClientApiSystem.Diagnostics.DiagnosticSource.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Diagnostics.DiagnosticSource.dll"/>
+								<File Id="OpcUaClientApiSystem.Formats.Asn1.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Formats.Asn1.dll"/>
+								<File Id="OpcUaClientApiSystem.IO.Pipelines.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.IO.Pipelines.dll"/>
+								<File Id="OpcUaClientApiSystem.Memory.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Memory.dll"/>
+								<File Id="OpcUaClientApiSystem.Numerics.Vectors.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Numerics.Vectors.dll"/>
+								<File Id="OpcUaClientApiSystem.Reflection.Metadata.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Reflection.Metadata.dll"/>
+								<File Id="OpcUaClientApiSystem.Runtime.CompilerServices.Unsafe.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Runtime.CompilerServices.Unsafe.dll"/>
+								<File Id="OpcUaClientApiSystem.Security.Cryptography.Cng.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Security.Cryptography.Cng.dll"/>
+								<File Id="OpcUaClientApiSystem.Text.Encodings.Web.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Text.Encodings.Web.dll"/>
+								<!-- <File Id="OpcUaClientApiSystem.Text.Json.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Text.Json.dll"/> -->
+								<File Id="OpcUaClientApiSystem.Threading.Tasks.Extensions.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.Threading.Tasks.Extensions.dll"/>
+								<File Id="OpcUaClientApiSystem.ValueTuple.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\System.ValueTuple.dll"/>
+								<File Id="OpcUaClientApiViCellBLU.Server.Config.xml" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\ViCellBLU.Server.Config.xml"/>
+								<File Id="OpcUaClientApiViCellBLU_dotNET.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\ViCellBLU_dotNET.dll"/>
+								<!-- <File Id="OpcUaClientApiViCellBLU_dotNET.dll.config" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\ViCellBLU_dotNET.dll.config"/> -->
+								<File Id="OpcUaClientApi${project.build.automation_dll_name}.dll" Source="dependencies\OpcUaServer\ViCellBLU_dotNET\\${project.build.automation_dll_name}.dll"/>
+							</Component>	
+						</Directory>
+		
+						<Directory Id="ViCellBLUOpcUa_Example_Client_Application" Name="ViCellBLUOpcUa_Example_Client_Application">
+							<Directory Id="src" Name="src">
+								<Directory Id="Properties" Name="Properties">
+									<Component Guid="CE31263F-0D9F-4E44-B785-B235F84A228D" Id="ViCellBLUOpcClientSourcePropertiesFiles">
+										<File Id="AssemblyInfo.cs" Source="dependencies\OpcUaServer\ViCellOpcUaClient\src\Properties\AssemblyInfo.cs" />
+									</Component>
+								</Directory>
+								<Component Guid="2BADB04E-5952-4EB7-B2C6-3EED100855E0" Id="ViCellBLUOpcClientSourceFiles">
+									<File Id="App.config" Source="dependencies\OpcUaServer\ViCellOpcUaClient\src\App.config"/>
+									<File Id="ViCellOpcUaClient.cs" Source="dependencies\OpcUaServer\ViCellOpcUaClient\src\ViCellOpcUaClient.cs"/>
+									<File Id="ViCellOpcUaClient.csproj" Source="dependencies\OpcUaServer\ViCellOpcUaClient\src\ViCellOpcUaClient.csproj"/>
+								</Component>
+							</Directory>
+							<Component Guid="2752EA7F-6217-4FA4-A0BA-65B554830527" Id="ViCellBLUOpcUaClientFiles">
+								<File Id="OpcUaClientExampleBouncyCastle.Crypto.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\BouncyCastle.Crypto.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Connections.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Connections.Abstractions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Hosting.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Hosting.Abstractions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Hosting.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Hosting.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Hosting.Server.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Http.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Http.Abstractions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Http.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Http.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Http.Extensions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Http.Extensions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Http.Features.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Http.Features.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Server.Kestrel.Core.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Server.Kestrel.Core.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Server.Kestrel.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Server.Kestrel.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.Server.Kestrel.Https.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Server.Kestrel.Https.dll"/>
+								<File Id="OpcExampleMicrosoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll"/>
+								<File Id="OpcExampleMicrosoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.AspNetCore.WebUtilities.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.AspNetCore.WebUtilities.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.Configuration.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Configuration.Abstractions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.Configuration.Binder.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Configuration.Binder.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.Configuration.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Configuration.dll"/>
+								<File Id="OpcExampleMicrosoft.Extensions.Configuration.EnvironmentVariables.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Configuration.EnvironmentVariables.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.Configuration.FileExtensions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Configuration.FileExtensions.dll"/>
+								<File Id="OpcExampleMicrosoft.Extensions.DependencyInjection.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.DependencyInjection.Abstractions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.DependencyInjection.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.DependencyInjection.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.FileProviders.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.FileProviders.Abstractions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.FileProviders.Physical.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.FileProviders.Physical.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.FileSystemGlobbing.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.FileSystemGlobbing.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.Hosting.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Hosting.Abstractions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.Logging.Abstractions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Logging.Abstractions.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.Logging.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Logging.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.ObjectPool.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.ObjectPool.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.Options.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Options.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Extensions.Primitives.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Extensions.Primitives.dll"/>
+								<File Id="OpcUaClientExampleMicrosoft.Net.Http.Headers.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Microsoft.Net.Http.Headers.dll"/>
+								<File Id="OpcUaClientExampleNewtonsoft.Json.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Newtonsoft.Json.dll"/>
+								<File Id="OpcUaClientExampleOpc.Ua.Bindings.Https.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Opc.Ua.Bindings.Https.dll"/>
+								<File Id="OpcUaClientExampleOpc.Ua.Client.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Opc.Ua.Client.dll"/>
+								<File Id="OpcUaClientExampleOpc.Ua.Configuration.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Opc.Ua.Configuration.dll"/>
+								<File Id="OpcUaClientExampleOpc.Ua.Core.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Opc.Ua.Core.dll"/>
+								<File Id="OpcUaClientExampleOpc.Ua.Gds.Client.Common.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Opc.Ua.Gds.Client.Common.dll"/>
+								<File Id="OpcUaClientExampleOpc.Ua.Gds.Server.Common.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Opc.Ua.Gds.Server.Common.dll"/>
+								<File Id="OpcUaClientExampleOpc.Ua.Security.Certificates.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Opc.Ua.Security.Certificates.dll"/>
+								<File Id="OpcUaClientExampleOpc.Ua.Server.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\Opc.Ua.Server.dll"/>
+								<File Id="OpcUaClientExampleSystem.Buffers.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Buffers.dll"/>
+								<File Id="OpcUaClientExampleSystem.Collections.Immutable.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Collections.Immutable.dll"/>
+								<File Id="OpcUaClientExampleSystem.ComponentModel.Annotations.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.ComponentModel.Annotations.dll"/>
+								<File Id="OpcUaClientExampleSystem.Diagnostics.DiagnosticSource.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Diagnostics.DiagnosticSource.dll"/>
+								<File Id="OpcUaClientExampleSystem.Formats.Asn1.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Formats.Asn1.dll"/>
+								<File Id="OpcUaClientExampleSystem.IO.Pipelines.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.IO.Pipelines.dll"/>
+								<File Id="OpcUaClientExampleSystem.Memory.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Memory.dll"/>
+								<File Id="OpcUaClientExampleSystem.Numerics.Vectors.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Numerics.Vectors.dll"/>
+								<File Id="OpcUaClientExampleSystem.Reflection.Metadata.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Reflection.Metadata.dll"/>
+								<File Id="OpcUaClientExampleSystem.Runtime.CompilerServices.Unsafe.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Runtime.CompilerServices.Unsafe.dll"/>
+								<File Id="OpcUaClientExampleSystem.Security.Cryptography.Cng.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Security.Cryptography.Cng.dll"/>
+								<File Id="OpcUaClientExampleSystem.Text.Encodings.Web.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Text.Encodings.Web.dll"/>
+								<File Id="OpcUaClientExampleSystem.Threading.Tasks.Extensions.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.Threading.Tasks.Extensions.dll"/>
+								<File Id="OpcUaClientExampleSystem.ValueTuple.dll" Source="dependencies\OpcUaServer\ViCellOpcUaClient\System.ValueTuple.dll"/>
+								<File Id="OpcUaClientExampleViCellOpcUaClient.exe" Source="dependencies\OpcUaServer\ViCellOpcUaClient\ViCellOpcUaClient.exe"/>
+								<File Id="OpcUaClientExampleViCellOpcUaClient.exe.config" Source="dependencies\OpcUaServer\ViCellOpcUaClient\ViCellOpcUaClient.exe.config"/>				
+							</Component>
+						</Directory>
+					</Directory>
+				</Directory>
+					
+				<Directory Id="Software" Name="Software">
+					<Directory Id="Target" Name="Target">
+						<Component Id="Target" Guid="ca6c1f91-80a1-44d1-a8f5-abee29f61f78"
+							SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no"
+							Permanent="no" Transitive="no" Win64="no" Location="either">
+							<CreateFolder />
+						</Component>
+					</Directory>
+					<Component Guid="e4c70cb9-920c-444c-a635-775408d8beb4" Id="ApplicationFiles0">
+						<File Id="ApplicationFile1" Source="dependencies\ScoutUI\AForge.dll"/>
+					</Component>
+					<Component Guid="2dce0a05-3722-4f90-9985-5e6b118603aa" Id="ApplicationFiles208">
+						<File Id="ApplicationFile208" Source="dependencies\ScoutUI\ScoutLanguageResources.dll"/>
+					</Component>
+					<Component Guid="c78dc756-379b-4687-9da9-6a04bcd50c65" Id="ApplicationFiles1">
+						<File Id="ApplicationFile2" Source="dependencies\ScoutUI\AForge.Imaging.dll"/>
+					</Component>
+					<Component Guid="44097ce6-412f-482d-bb49-7f00c39a5bf4" Id="ApplicationFiles2">
+						<File Id="ApplicationFile3" Source="dependencies\ScoutUI\AForge.Math.dll"/>
+					</Component>
+					<Component Guid="0c106d3e-b51c-4fe4-b925-a9fe5021388e" Id="ApplicationFiles3">
+						<File Id="ApplicationFile4" Source="dependencies\ScoutUI\BackgroundUniformityCriteriaModel.dll"/>
+					</Component>
+					<Component Guid="60180746-6205-4247-b54c-9e92a707ab09" Id="ApplicationFiles4">
+						<File Id="ApplicationFile5" Source="dependencies\Hawkeye\Installer\Carousel.ico"/>
+					</Component>
+					<Component Guid="1b1db7d1-e9ec-44e6-b084-5128b192f657" Id="ApplicationFiles5">
+						<File Id="ApplicationFile6" Source="dependencies\ScoutUI\ApiProxies.dll"/>
+					</Component>
+					<Component Guid="9a2620ac-b77c-4409-8526-8df099c120a5" Id="ApplicationFiles6">
+						<File Id="Applicationfile7" Source="dependencies\ScoutUI\HawkeyeCoreAPI.dll"/>
+					</Component>
+					<Component Guid="b848c370-5a1d-4b5a-b64d-6a6c384b1357" Id="ApplicationFiles7">
+						<File Id="ApplicationFile8" Source="dependencies\ScoutUI\log4net.dll"/>
+					</Component>
+					<Component Guid="318E7BE8-6293-4A1E-A5A9-CF04CA5FD2B7" Id="ApplicationFiles10">
+						<File Id="ApplicationFile10" Source="dependencies\ScoutUI\MailKit.dll"/>
+					</Component>
+					<Component Guid="46C7D700-46B2-46B6-8D33-4303B0E91283" Id="ApplicationFiles11">
+						<File Id="ApplicationFile11" Source="dependencies\ScoutUI\MimeKit.dll"/>
+					</Component>
+					<Component Guid="451DB8C3-9FD9-4111-A9F0-4FE0E92A80FD" Id="ApplicationFiles12">
+						<File Id="ApplicationFile12" Source="dependencies\ScoutUI\BouncyCastle.Crypto.dll"/>
+					</Component>                         
+					<Component Guid="82f62f56-27b2-47f7-a886-0c2b3c759156" Id="ApplicationFiles17">
+						<File Id="ApplicationFile18" Source="dependencies\ScoutUI\ScoutDataAccessLayer.dll"/>
+					</Component>
+					<Component Guid="2d4cf3e6-077f-4315-81c5-4d47a7000250" Id="ApplicationFiles18">
+						<File Id="ApplicationFile19" Source="dependencies\ScoutUI\ScoutDomains.dll"/>
+					</Component>
+					<Component Guid="a3efd422-f905-4148-a688-711ad0847757" Id="ApplicationFiles21">
+						<File Id="ApplicationFile22" Source="dependencies\ScoutUI\ScoutModels.dll"/>
+					</Component>
+					<Component Guid="56a8f481-2425-4e91-8805-aef26a1c8cb0" Id="ApplicationFiles22">
+						<File Id="ApplicationFile23" Source="dependencies\ScoutUI\ScoutUtilities.dll"/>
+					</Component>
+					<Component Guid="ddb91490-6870-45fd-9722-36d40bb779b7" Id="ApplicationFiles23">
+						<File Id="ApplicationFile24" Source="dependencies\ScoutUI\ScoutViewModels.dll"/>
+					</Component>
+					<Component Guid="D800451D-E2B4-44F8-9D46-E52C3A677F11" Id="ApplicationFiles24">
+						<File Id="ApplicationFile25" Source="dependencies\ScoutUI\System.Reactive.dll"/>
+					</Component>
+					<Component Guid="FC9638C5-743C-477A-A975-6F8E942B423D" Id="ApplicationFiles26">
+						<File Id="ApplicationFile27" Source="dependencies\ScoutUI\System.Reactive.Core.dll"/>
+					</Component>
+					<Component Guid="7a816ae1-599a-4c2e-a3e7-b13923758708" Id="ApplicationFiles28">
+						<File Id="ApplicationFile29" Source="dependencies\ScoutUI\System.Reactive.Interfaces.dll"/>
+					</Component>
+					<Component Guid="d2db5a85-5b42-46f8-a076-87cc9c8e0515" Id="ApplicationFiles36">
+						<File Id="ApplicationFile37" Source="dependencies\ScoutUI\System.Windows.Controls.DataVisualization.Toolkit.dll"/>
+					</Component>
+					<Component Guid="3fd046b3-0067-4b70-b015-0707e69594ed" Id="ApplicationFiles38">
+						<File Id="ApplicationFile39" Source="dependencies\ScoutUI\System.Windows.Interactivity.dll"/>
+					</Component>
+					<Component Guid="0b1341cd-d445-4061-84c1-e15fad47561d" Id="ApplicationFiles40">
+						<File Id="ApplicationFile41" Source="dependencies\ScoutUI\ViCellBLU_UI.exe"/>
+					</Component>
+					<Component Guid="1ecfa412-93e3-4b3b-97ca-f5c40e0c078c" Id="ApplicationFiles41">
+						<File Id="ApplicationFile42" Source="dependencies\ScoutUI\ViCellBLU_UI.exe.config"/>
+					</Component>
+					<Component Guid="dc5f03c4-6644-4aba-9889-87a7e168564a" Id="ApplicationFiles137">
+						<File Id="ApplicationFile139" Source="dependencies\ScoutUI\Microsoft.ReportViewer.Common.dll"/>
+					</Component>
+					<Component Guid="f0a14d3b-543f-4a64-a7c4-fd7a75f77b03" Id="ApplicationFiles138">
+						<File Id="ApplicationFile140" Source="dependencies\ScoutUI\Microsoft.ReportViewer.DataVisualization.dll"/>
+					</Component>
+					<Component Guid="c963cae3-59c8-412c-b118-464ea2edc067" Id="ApplicationFiles139">
+						<File Id="ApplicationFile141" Source="dependencies/ScoutUI/Microsoft.ReportViewer.ProcessingObjectModel.dll"/>
+					</Component>
+					<Component Guid="d7ca0d31-ad16-4518-89db-29abfeb94d7f" Id="ApplicationFiles140">
+						<File Id="ApplicationFile142" Source="dependencies\ScoutUI\Microsoft.ReportViewer.WinForms.dll"/>
+					</Component>
+					<Component Guid="33bb8b03-2468-455d-aa06-f6f58631e168" Id="ApplicationFiles141">
+						<File Id="ApplicationFile143" Source="dependencies\ScoutUI\Microsoft.SqlServer.Types.dll"/>
+					</Component>
+					<Component Guid="475B466E-387D-47FA-A0C6-4F3B95633064" Id="ApplicationFiles150">
+						<File Id="ApplicationFile150" Source="dependencies\ScoutUI\BAFWcsharp.dll"/>
+					</Component>
+					<Component Guid="B06D1834-94AB-4138-896B-A205DCBC6CCE" Id="ApplicationFiles151">
+						<File Id="ApplicationFile151" Source="dependencies\ScoutUI\ExportManager.dll"/>
+					</Component>
+
+					<Component Guid="919d16a9-d7ee-4b78-bd09-3bdb5aae9eb7" Id="ApplicationFiles301">
+						<File Id="ApplicationFile3011" Source="dependencies\ScoutUI\ScoutServices.dll"/>
+						<File Id="ApplicationFile3012" Source="dependencies\ScoutUI\Newtonsoft.Json.dll"/>
+					</Component>
+					<Component Guid="b9a607c3-5985-4aa9-b5de-c7b047aa5b6d" Id="ApplicationFiles302">
+						<File Id="ApplicationFile3024" Source="dependencies\ScoutUI\System.Runtime.CompilerServices.Unsafe.dll"/>
+						<File Id="ApplicationFile3025" Source="dependencies\ScoutUI\System.Threading.Tasks.Extensions.dll"/>
+						<File Id="ApplicationFile3028" Source="dependencies\ScoutUI\JetBrains.Annotations.dll"/>
+					</Component>
+					<Component Guid="35ce1b54-7856-4605-92d8-f7d60539f895" Id="ApplicationFiles303">
+						<File Id="ApplicationFile3037" Source="dependencies\ScoutUI\Castle.Core.dll"/>
+						<File Id="ApplicationFile3038" Source="dependencies\ScoutUI\Ninject.dll"/>
+						<File Id="ApplicationFile30381" Source="dependencies\ScoutUI\Ninject.Extensions.Factory.dll"/>
+						<File Id="ApplicationFile30382" Source="dependencies\ScoutUI\Microsoft.Extensions.Configuration.Abstractions.dll"/>
+						<File Id="ApplicationFile30383" Source="dependencies\ScoutUI\Microsoft.Extensions.Configuration.dll"/>
+						<File Id="ApplicationFile30384" Source="dependencies\ScoutUI\Microsoft.Extensions.Primitives.dll"/>
+						<File Id="ApplicationFile30385" Source="dependencies\ScoutUI\CommandLine.dll"/>
+						<File Id="ApplicationFile30386" Source="dependencies\ScoutUI\AutoMapper.dll"/>
+						<File Id="ApplicationFile30387" Source="dependencies\ScoutUI\Microsoft.Extensions.Configuration.Json.dll"/>
+						<File Id="ApplicationFile30388" Source="dependencies\ScoutUI\Microsoft.Extensions.FileProviders.Abstractions.dll"/>
+						<File Id="ApplicationFile30389" Source="dependencies\ScoutUI\Microsoft.Extensions.Configuration.FileExtensions.dll"/>
+						<File Id="ApplicationFile30390" Source="dependencies\ScoutUI\Microsoft.Extensions.FileProviders.Physical.dll"/>
+						<File Id="ApplicationFile3039" Source="dependencies\ScoutUI\Ninject.Extensions.Logging.dll"/>
+						<File Id="ApplicationFile30391" Source="dependencies\ScoutUI\Ninject.Extensions.Logging.Log4net.dll"/>
+						<File Id="ApplicationFile30392" Source="dependencies\ScoutUI\appsettings.json"/>
+						<File Id="ApplicationFile30393" Source="dependencies\ScoutUI\System.Text.Json.dll"/>
+						<File Id="ApplicationFile30394" Source="dependencies\ScoutUI\System.Buffers.dll"/>
+						<File Id="ApplicationFile30395" Source="dependencies\ScoutUI\app.config"/>
+					</Component>
+
+					<Component Guid="b8ef785a-1390-46a5-9273-e9cb959028d9" Id="ApplicationFiles304">
+						<File Id="ApplicationFile3041" Source="dependencies\ScoutUI\WpfMath.dll"/>
+						<File Id="ApplicationFile3043" Source="dependencies\ScoutUI\Google.Protobuf.dll"/>
+						<File Id="ApplicationFile3044" Source="dependencies\ScoutUI\Grpc.Core.Api.dll"/>
+						<File Id="ApplicationFile3045" Source="dependencies\ScoutUI\Grpc.Core.dll"/>
+						<File Id="ApplicationFile3046" Source="dependencies\ScoutUI\grpc_csharp_ext.x64.dll"/>
+						<File Id="ApplicationFile3047" Source="dependencies\ScoutUI\grpc_csharp_ext.x86.dll"/>
+						<File Id="ApplicationFile3048" Source="dependencies\ScoutUI\GrpcServer.dll"/>
+						<File Id="ApplicationFile3049" Source="dependencies\ScoutUI\ScoutOPCUa.dll"/>
+						<File Id="ApplicationFile30491" Source="dependencies\ScoutUI\System.ValueTuple.dll"/>
+					</Component>
+
+					<Component Guid="675275fb-761f-423f-9801-8871e913caf4" Id="ApplicationFiles305">
+						<File Id="ApplicationFile3051" Source="dependencies\ScoutUI\Watchdog\WatchdogConfiguration.json"/>
+					</Component>
+
+					<Directory Id="HelpDocuments" Name="HelpDocuments">
+						<Component Guid="ceaad7f9-1dbc-4af8-9d29-b5cfe984a38e" Id="ApplicationFiles44">
+							<File Id="ApplicationFile45" Source="dependencies\ScoutUI\HelpDocuments\Illustrato_file-3.pdf"/>
+						</Component>
+					</Directory>
+					<Directory Id="UIConfiguration" Name="UIConfiguration">
+						<Component Guid="cd22df61-8845-4524-a711-41a7c69ac242" Id="ApplicationFiles143">
+							<File Id="ApplicationFile146" Source="dependencies\ScoutUI\UIConfiguration\environment.config"/>
+							<File Id="ApplicationFile147" Source="dependencies\ScoutUI\UIConfiguration\logging.config"/>
+							<File Id="ApplicationFile148" Source="dependencies\ScoutUI\UIConfiguration\ui.config"/>
+							<File Id="ApplicationFile149" Source="deployment.config"/>
+						</Component>
+					</Directory>
+					<Directory Id="Reports" Name="Reports">
+						<Component Guid="6f2f1a3d-07cb-4283-9d69-b1d2fc5119bf" Id="ReportsComp">
+							<File Id="ApplicationFile160" Source="dependencies\ScoutUI\Reports\CellTypes\CellTypesReportLandscapeRdlcViewer.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile161" Source="dependencies\ScoutUI\Reports\CellTypes\CellTypesReportLandscapeRdlcViewerJa-JP.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile162" Source="dependencies\ScoutUI\Reports\CellTypes\CellTypesReportLandscapeRdlcViewerZh-CN.rdlc" CompanionFile="ApplicationFile41"/>
+
+							<File Id="ApplicationFile163" Source="dependencies\ScoutUI\Reports\InstrumentStatus\InstrumentStatusReportRdlcViewer.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile165" Source="dependencies\ScoutUI\Reports\InstrumentStatus\InstrumentStatusReportRdlcViewerJa-JP.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile166" Source="dependencies\ScoutUI\Reports\InstrumentStatus\InstrumentStatusReportRdlcViewerZh-CN.rdlc" CompanionFile="ApplicationFile41"/>
+
+							<File Id="ApplicationFile167" Source="dependencies\ScoutUI\Reports\QualityControls\QualityControlsReportRdlcViewer.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile168" Source="dependencies\ScoutUI\Reports\QualityControls\QualityControlsReportRdlcViewerJa-JP.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile169" Source="dependencies\ScoutUI\Reports\QualityControls\QualityControlsReportRdlcViewerZh-CN.rdlc" CompanionFile="ApplicationFile41"/>
+
+							<File Id="ApplicationFile170" Source="dependencies\ScoutUI\Reports\RunReport\RunResultsReportRdlcViewer.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile171" Source="dependencies\ScoutUI\Reports\RunReport\RunResultsReportRdlcViewerJa-JP.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile172" Source="dependencies\ScoutUI\Reports\RunReport\RunResultsReportRdlcViewerZh-CN.rdlc" CompanionFile="ApplicationFile41"/>
+
+							<File Id="ApplicationFile173" Source="dependencies\ScoutUI\Reports\RunSummary\RunSummaryReportLandscapeRdlcViewer.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile174" Source="dependencies\ScoutUI\Reports\RunSummary\RunSummaryReportLandscapeRdlcViewerJa-JP.rdlc" CompanionFile="ApplicationFile41"/>
+							<File Id="ApplicationFile175" Source="dependencies\ScoutUI\Reports\RunSummary\RunSummaryReportLandscapeRdlcViewerZh-CN.rdlc" CompanionFile="ApplicationFile41"/>
+						</Component>
+					</Directory>
+					<Directory Id="XMLDB" Name="XMLDB">
+						<Component Guid="e1d38c89-aaad-4df7-9421-4376d8094d81" Id="ApplicationFiles77">
+							<File Id="ApplicationFile78" Name="ConfigurationSettings.xml.template" Source="dependencies\ScoutUI\XMLDB\ConfigurationSettings.xml"/>
+						</Component>
+						<Component Guid="37ee3eff-ab11-4452-ab08-ca9ef09db945" Id="ApplicationFiles78">
+							<File Id="ApplicationFile79" Source="dependencies\ScoutUI\XMLDB\Master.xml"/>
+						</Component>
+					</Directory>
+				</Directory>
+			</Directory>
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ProgramMenuSubfolder" Name="ViCell">
+					<Component Guid="98fe978e-e052-4704-8bfd-c1ebf5cf5b7a" Id="ApplicationShortcuts">
+						<Shortcut 
+							Description="ViCellUI" 
+							Id="ApplicationShortcut1" 
+							Name="ViCell BLU" 
+							Target="[Software]ViCellBLU_UI.exe" 
+							WorkingDirectory="Software">
+							<Icon Id="vicell_icon" SourceFile="dependencies\Hawkeye\Installer\Carousel.ico"/>
+						</Shortcut>
+						<RegistryValue Key="Software\Beckman\ViCellBlu" KeyPath="yes" Name="installed" Root="HKCU" Type="integer" Value="1"/>
+						<RemoveFolder Id="ProgramMenuSubfolder" On="uninstall"/>
+					</Component>
+				</Directory>
+			</Directory>
+		</Directory>
+
+		<Feature Id="DefaultFeature" Level="1">		  
+			<ComponentRef Id="RegistryEntries"/>
+			<ComponentRef Id="ApplicationFiles0"/>
+			<ComponentRef Id="ApplicationFiles1"/>
+			<ComponentRef Id="ApplicationFiles2"/>
+			<ComponentRef Id="ApplicationFiles3"/>
+			<ComponentRef Id="ApplicationFiles4"/>
+			<ComponentRef Id="ApplicationFiles5"/>		 
+			<ComponentRef Id="ApplicationFiles6"/>
+			<ComponentRef Id="ApplicationFiles7"/>
+			<ComponentRef Id="ApplicationFiles10"/>
+			<ComponentRef Id="ApplicationFiles11"/>
+			<ComponentRef Id="ApplicationFiles12"/>
+			<ComponentRef Id="ApplicationFiles17"/>
+			<ComponentRef Id="ApplicationFiles18"/>
+			<ComponentRef Id="ApplicationFiles21"/>
+			<ComponentRef Id="ApplicationFiles22"/>
+			<ComponentRef Id="ApplicationFiles23"/>
+			<ComponentRef Id="ApplicationFiles24"/>
+			<ComponentRef Id="ApplicationFiles26"/>
+			<ComponentRef Id="ApplicationFiles28"/>
+			<ComponentRef Id="ApplicationFiles36"/>
+			<ComponentRef Id="ApplicationFiles38"/>
+
+			<ComponentRef Id="ApplicationFiles40"/>
+			<ComponentRef Id="ApplicationFiles41"/>
+			<ComponentRef Id="ApplicationFiles44"/>
+
+			<ComponentRef Id="ReportsComp"/>
+
+			<ComponentRef Id="ApplicationFiles77"/>
+			<ComponentRef Id="ApplicationFiles78"/>
+
+			<ComponentRef Id="ApplicationFiles137"/>
+			<ComponentRef Id="ApplicationFiles138"/>
+			<ComponentRef Id="ApplicationFiles139"/>
+			<ComponentRef Id="ApplicationFiles140"/>
+			<ComponentRef Id="ApplicationFiles141"/>
+			<ComponentRef Id="ApplicationFiles143"/>
+
+			<ComponentRef Id="ApplicationFiles150"/>
+			<ComponentRef Id="ApplicationFiles151"/>
+
+			<ComponentRef Id="ApplicationFiles200"/>
+			<ComponentRef Id="ApplicationFiles201"/>
+			<ComponentRef Id="ApplicationFiles202"/>
+			<ComponentRef Id="ApplicationFiles203"/>
+			<ComponentRef Id="ApplicationFiles204"/>
+			<ComponentRef Id="ApplicationFiles205"/>
+			<ComponentRef Id="ApplicationFiles206"/>
+			<ComponentRef Id="ApplicationFiles207"/>
+			<ComponentRef Id="ApplicationFiles208"/>
+
+			<ComponentRef Id="ApplicationFiles301"/>
+			<ComponentRef Id="ApplicationFiles302"/>
+			<ComponentRef Id="ApplicationFiles303"/>
+			<ComponentRef Id="ApplicationFiles304"/>
+			<ComponentRef Id="ApplicationFiles305"/>
+
+			<!--ComponentRef Id="AddFonts"/-->
+			<ComponentRef Id="ApplicationShortcuts"/>
+			<ComponentRef Id="Target"/>
+
+			<!-- OPC UA Files -->
+			<ComponentRef Id="OpcUaServerModelFiles" />
+			<ComponentRef Id="OpcUaServerSchemaFiles" />
+			<ComponentRef Id="OpcUaServerFiles" />
+			
+			<ComponentRef Id="ViCellBluDotNetApiFiles" />
+			<ComponentRef Id="ViCellBLUOpcUaClientFiles" />
+			<ComponentRef Id="ViCellBLUOpcClientSourceFiles" />
+			<ComponentRef Id="ViCellBLUOpcClientSourcePropertiesFiles" />
+
+		</Feature>
+		<SetDirectory Id="INSTALLDIR" Value="[CURRENTDIRECTORY]"/>
+	</Product>
+	<Fragment>
+		<Binary Id='bInstall.Config' SourceFile='Install.Config.vbs' />
+		<CustomAction Id='Install.Config' VBScriptCall='' BinaryKey='bInstall.Config' Execute='immediate' Return='ignore'/>
+	</Fragment>
+</Wix>

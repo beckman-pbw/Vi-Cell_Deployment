@@ -1,0 +1,32 @@
+<assembly>
+  <!-- 
+    assembly descriptor to create a zip package containing the scripts laid
+    out as in the src/main/scripts directory.
+  -->
+  <id>offline</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <files>
+    <!-- include the build.properties file, filled in with current properties -->
+    <file>
+      <source>src/main/assembly/build/build.properties</source>
+      <outputDirectory></outputDirectory>
+      <filtered>true</filtered>
+    </file>
+  </files>
+  <fileSets>
+    <fileSet>
+      <directory>target</directory>
+      <lineEnding>keep</lineEnding>
+      <outputDirectory></outputDirectory>
+      <fileMode>0755</fileMode>
+      <includes>
+        <include>${project.build.offline_partnumber}*.*</include>
+        <include>offlinehash.xml</include>
+        <include>offlinehash.txt</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</assembly>
