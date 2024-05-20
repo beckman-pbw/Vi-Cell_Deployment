@@ -15,7 +15,7 @@
       <outputDirectory></outputDirectory>
       <filtered>true</filtered>
     </file>
-<file><source>target/dependencies/Hawkeye/HawkeyeFTDIEEPROMWriter.exe</source><outputDirectory>Hawkeye</outputDirectory><filtered>false</filtered></file>
+<!-- <file><source>target/dependencies/Hawkeye/HawkeyeFTDIEEPROMWriter.exe</source><outputDirectory>Hawkeye</outputDirectory><filtered>false</filtered></file> -->
 <file><source>target/dependencies/Hawkeye/ServiceAccountAccess.exe</source><outputDirectory>Hawkeye</outputDirectory><filtered>false</filtered></file>
   </files>
 </assembly>
